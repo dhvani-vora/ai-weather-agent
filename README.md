@@ -1,35 +1,31 @@
 # AI Weather Agent
 
-An AI-powered weather assistant built using LangChain Agents and Gemini 2.5 Flash. 
-The agent can retrieve real-time weather information, automatically determine the user's location, and answer weather-related questions using tool calling.
+An AI agent built using LangChain and Gemini that can:
 
-Features:
+- Get the current weather for a city
+- Detect the user's location
+- Use tool calling through LangChain agents
+- Retrieve live weather data from OpenWeatherMap API
 
-Real-time weather retrieval
-Automatic location detection
-LangChain agent architecture
-Gemini 2.5 Flash integration
-OpenWeather API integration
-Multi-tool reasoning
+## Technologies
 
-Technologies Used:
+- Python
+- LangChain
+- Gemini 2.5 Flash
+- OpenWeatherMap API
 
-Python
-LangChain
-Gemini 2.5 Flash
-OpenWeather API
-IPAPI
+## Setup
 
-Sample Queries:
+1. Clone the repository
+2. Install dependencies
 
-What is the weather in Chicago?
-What's the weather today?
-Weather in Charlotte, NC
+pip install -r requirements.txt
 
-Future Improvements:
+3. Create a .env file
 
-Streamlit interface
-Conversation memory
-Database storage
-Weather forecasts
-Error handling improvements
+GOOGLE_API_KEY=your_key_here
+OPEN_WEATHER_API_KEY=your_key_here
+
+4. Run
+
+python main.py
