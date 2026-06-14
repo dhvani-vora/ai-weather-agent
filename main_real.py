@@ -1,12 +1,15 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 from langchain.agents import create_agent
+from langgraph.checkpoint.postgres import PostgresSaver
+
 import os
 
 import requests
 
-
 load_dotenv()
+
+DB_URI = os.getenv("SUPABASE_DB_URI")
 
 def get_weather(city: str):
     """Get weather for a given city.
@@ -20,7 +23,14 @@ def get_weather(city: str):
     }
     response = requests.get(base_url, params=params)
     data = response.json()
+    print(data)
+    if response.status_code != 200:
+        return {
+            "error": data.get("message", "Unknown error")
+        }
+
     temperature_celsius = data['main']['temp']
+    
     temperature_fahrenheit = temperature_celsius * 9/5 + 32
     
     weather_data = {
@@ -62,20 +72,33 @@ Workflow:
 4. Use your knowledge to determine which temperature unit to use (Celsius or Fahrenheit) based on the user's location or query.
 5. Present the weather information including temperature in the appropriate unit, condition, wind speed, humidity, and any other relevant details from the get_weather() response.
 """
-agent = create_agent(
-    model=llm,
-    tools=[get_weather, get_location],
-    system_prompt=system_prompt
-)
-if __name__ == "__main__":
-    user_query = input("Enter your query here: ")
+with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
+    checkpointer.setup()
+    agent = create_agent(
+        model=llm,
+        tools=[get_weather, get_location],
+        system_prompt=system_prompt,
+        checkpointer = checkpointer
+    )
+    if __name__ == "__main__":
+        while True:
+            user_query = input("Enter your query here: ")
+            if user_query.lower() in ["exit", "quit", "bye"]:
+                break
 
-    response = agent.invoke({
-        "messages": [
+            response = agent.invoke(
             {
-                "role": "user",
-                "content": user_query
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": user_query
+                    }
+                ]
+            },
+            {
+                "configurable": {
+                    "thread_id": "1"
+                }
             }
-        ]
-    })
-    print(response['messages'][-1].content)
+            )
+            print(response['messages'][-1].content)
