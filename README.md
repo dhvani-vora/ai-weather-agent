@@ -10,6 +10,7 @@ An AI agent built with LangChain and Google's Gemini model that can retrieve rea
 - Gemini 2.5 Flash integration
 - Dynamic tool selection through AI reasoning
 - Support for both Celsius and Fahrenheit temperatures
+- PostgreSQL database storage using Supabase
 
 ## How It Works
 
@@ -33,13 +34,34 @@ Examples:
 - "What's the weather today?"
   - Calls `get_location()`
   - Calls `get_weather(location)`
+    
+## Architecture
+
+User Query
+    ↓
+Gemini 2.5 Flash
+    ↓
+LangChain Agent
+    ↓
+Tool Selection
+    ├── get_weather()
+    └── get_location()
+    ↓
+OpenWeatherMap API / IP Geolocation API
+    ↓
+Response Generated
+    ↓
+Conversation Saved to Supabase PostgreSQL
 
 ## Tech Stack
 
 - Python
 - LangChain
-- Gemini 2.5 Flash
+- LangGraph
+- Google Gemini 2.5 Flash
 - OpenWeatherMap API
+- PostgreSQL
+- Supabase
 - Requests
 - Python Dotenv
 
@@ -73,6 +95,7 @@ pip install -r requirements.txt
 ```env
 GOOGLE_API_KEY=your_google_api_key
 OPEN_WEATHER_API_KEY=your_openweather_api_key
+SUPABASE_DB_URI=your_supabase_connection_string
 ```
 
 4. Run the application
@@ -93,23 +116,54 @@ Output:
 ```text
 The weather in New York is sunny with a temperature of 25°C.
 ```
+## Conversation Memory
 
-## Concepts Learned
+The agent uses LangGraph's PostgresSaver with a PostgreSQL database hosted on Supabase.
 
-This project was built while learning AI Engineering and demonstrates:
+Conversation history is stored persistently, allowing the agent to remember previous messages even after the application is restarted.
 
-- AI Agents
-- Tool Calling
-- Prompt Engineering
-- Environment Variables
-- API Integration
-- LangChain Workflows
-- Multi-step Agent Reasoning
+Example:
+
+User: Where am I?
+
+Agent: You are in Rome, Italy.
+
+[Application closes]
+
+User: What is the weather there?
+
+Agent: The weather in Rome is sunny with a temperature of 25°C.
+
+## Learning Outcomes
+
+Through this project, I learned:
+
+- Building AI agents with LangChain
+- Tool calling and function execution
+- Managing conversation memory
+- Using LangGraph checkpointers
+- Working with PostgreSQL databases
+- Integrating Supabase with Python
+- Designing multi-step AI workflows
 
 ## Future Improvements
 
-- Streamlit web interface
-- Chat memory
+- Web interface
+- User authentication
 - Weather forecasts
-- Error handling for invalid cities
-- Database-backed conversation history
+- GPS-based location retrieval
+- Multiple user sessions
+- Deployment to cloud hosting
+
+## Version History
+
+### v1.0
+- Gemini-powered weather agent
+- Tool calling with OpenWeatherMap API
+- Automatic location detection
+
+### v1.1
+- Persistent conversation memory
+- PostgreSQL database integration
+- Supabase cloud storage
+- Conversation history across sessions
