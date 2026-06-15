@@ -1,4 +1,7 @@
 langchain
 langchain-google-genai
+langgraph
+langgraph-checkpoint-postgres
 python-dotenv
 requests
+psycopg[binary]
