@@ -37,21 +37,28 @@ Examples:
     
 ## Architecture
 
+```text
 User Query
-    ↓
+    │
+    ▼
 Gemini 2.5 Flash
-    ↓
+    │
+    ▼
 LangChain Agent
-    ↓
-Tool Selection
+    │
     ├── get_weather()
+    │       └── OpenWeatherMap API
+    │
     └── get_location()
-    ↓
-OpenWeatherMap API / IP Geolocation API
-    ↓
-Response Generated
-    ↓
-Conversation Saved to Supabase PostgreSQL
+            └── IP Geolocation API
+    │
+    ▼
+Agent Response
+    │
+    ▼
+Supabase PostgreSQL
+(Persistent Conversation Memory)
+```
 
 ## Tech Stack
 
@@ -60,6 +67,7 @@ Conversation Saved to Supabase PostgreSQL
 - LangGraph
 - Google Gemini 2.5 Flash
 - OpenWeatherMap API
+- IPAPI Geolocation API
 - PostgreSQL
 - Supabase
 - Requests
@@ -73,6 +81,7 @@ ai-weather-agent/
 ├── main.py
 ├── requirements.txt
 ├── .env.example
+├── .gitignore
 └── README.md
 ```
 
@@ -81,7 +90,7 @@ ai-weather-agent/
 1. Clone the repository
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/dhvani-vora/ai-weather-agent
 ```
 
 2. Install dependencies
@@ -114,8 +123,9 @@ What is the weather in New York?
 Output:
 
 ```text
-The weather in New York is sunny with a temperature of 25°C.
+The weather in New York is sunny with a temperature of 25°C. The wind speed is 3.5 m/s and the humidity is 60%.
 ```
+
 ## Conversation Memory
 
 The agent uses LangGraph's PostgresSaver with a PostgreSQL database hosted on Supabase.
@@ -124,15 +134,15 @@ Conversation history is stored persistently, allowing the agent to remember prev
 
 Example:
 
+```text
 User: Where am I?
-
 Agent: You are in Rome, Italy.
 
 [Application closes]
 
 User: What is the weather there?
-
 Agent: The weather in Rome is sunny with a temperature of 25°C.
+```
 
 ## Learning Outcomes
 
