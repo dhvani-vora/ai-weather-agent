@@ -5,3 +5,4 @@ langgraph-checkpoint-postgres
 python-dotenv
 requests
 psycopg[binary]
+flask
