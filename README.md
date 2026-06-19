@@ -4,13 +4,13 @@ An AI agent built with LangChain and Google's Gemini model that can retrieve rea
 
 ## Features
 
-- Real-time weather retrieval using OpenWeatherMap API
+- Web-based chat interface built with Flask
+- Persistent conversation memory using LangGraph and Supabase
 - Automatic location detection using IP geolocation
-- LangChain agent with multiple tools
-- Gemini 2.5 Flash integration
-- Dynamic tool selection through AI reasoning
-- Support for both Celsius and Fahrenheit temperatures
-- PostgreSQL database storage using Supabase
+- Real-time weather retrieval using OpenWeatherMap
+- AI-powered tool calling with Gemini 2.5 Flash
+- Support for follow-up questions using conversation context
+- Dynamic temperature unit selection (Celsius/Fahrenheit)
 
 ## How It Works
 
@@ -22,7 +22,7 @@ Retrieves live weather data for a specified city using the OpenWeatherMap API.
 
 ### get_location()
 
-Determines the user's current location through IP-based geolocation.
+Determines the user's approximate location through IP-based geolocation.
 
 The AI agent decides which tool(s) to use based on the user's query.
 
@@ -38,27 +38,41 @@ Examples:
 ## Architecture
 
 ```text
-User Query
-    │
-    ▼
-Gemini 2.5 Flash
-    │
-    ▼
+User
+ │
+ ▼
+Flask Web Interface
+ │
+ ▼
 LangChain Agent
-    │
-    ├── get_weather()
-    │       └── OpenWeatherMap API
-    │
-    └── get_location()
-            └── IP Geolocation API
-    │
-    ▼
-Agent Response
-    │
-    ▼
+ │
+ ├── get_weather()
+ │       ▼
+ │   OpenWeatherMap API
+ │
+ └── get_location()
+         ▼
+        IPAPI
+ │
+ ▼
+Gemini 2.5 Flash
+ │
+ ▼
+LangGraph Memory
+ │
+ ▼
 Supabase PostgreSQL
-(Persistent Conversation Memory)
 ```
+## Screenshots
+
+### Weather Query with Follow-up Conversation
+![Weather Query](screenshots/weather-query.png)
+
+### Memory Demo Picture 1
+![Conversation Memory](screenshots/memory-demo-pt-1.png)
+
+### Persistent Memory After Restart
+![Persistent Memory](screenshots/memory-demo-pt-2.png)
 
 ## Tech Stack
 
@@ -72,17 +86,41 @@ Supabase PostgreSQL
 - Supabase
 - Requests
 - Python Dotenv
+- Flask
+  
+## Dependencies
 
+The project uses the following core packages:
+
+- langchain
+- langchain-google-genai
+- langgraph
+- langgraph-checkpoint-postgres
+- flask
+- requests
+- python-dotenv
+- psycopg[binary]
+
+  
 ## Project Structure
 
 ```text
 ai-weather-agent/
 │
-├── main.py
+├── app.py
+├── main_agent.py
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
-└── README.md
+├── README.md
+│
+├── templates/
+│   └── chat.html
+│
+└── screenshots/
+    ├── weather-query.png
+    ├── memory-demo-pt-1.png
+    └── memory-demo-pt-2.png
 ```
 
 ## Installation
@@ -105,14 +143,18 @@ pip install -r requirements.txt
 GOOGLE_API_KEY=your_google_api_key
 OPEN_WEATHER_API_KEY=your_openweather_api_key
 SUPABASE_DB_URI=your_supabase_connection_string
+FLASK_SECRET_KEY=your_secret_key
 ```
 
 4. Run the application
 
 ```bash
-python main.py
+python app.py
 ```
-
+5. Open
+```
+http://127.0.0.1:5000
+```
 ## Example Usage
 
 ```text
@@ -135,15 +177,14 @@ Conversation history is stored persistently, allowing the agent to remember prev
 Example:
 
 ```text
-User: Where am I?
-Agent: You are in Rome, Italy.
+User: What's the weather in Paris?
+Agent: It is 32°C and partly cloudy.
 
 [Application closes]
 
-User: What is the weather there?
-Agent: The weather in Rome is sunny with a temperature of 25°C.
+User: Which city did we discuss earlier?
+Agent: We previously discussed Paris.
 ```
-
 ## Learning Outcomes
 
 Through this project, I learned:
@@ -158,12 +199,12 @@ Through this project, I learned:
 
 ## Future Improvements
 
-- Web interface
-- User authentication
-- Weather forecasts
-- GPS-based location retrieval
-- Multiple user sessions
-- Deployment to cloud hosting
+- Browser GPS location support
+- Docker containerization
+- Cloud deployment
+- Streaming responses
+- Voice-enabled weather assistant
+- Multi-user conversation support
 
 ## Version History
 
@@ -177,3 +218,10 @@ Through this project, I learned:
 - PostgreSQL database integration
 - Supabase cloud storage
 - Conversation history across sessions
+
+### v1.2
+- Flask web chat interface
+- Session-based chat history display
+- Styled conversational UI
+- Integration of LangGraph memory with web application
+- Support for multi-message browser conversations
