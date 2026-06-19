@@ -72,33 +72,12 @@ Workflow:
 4. Use your knowledge to determine which temperature unit to use (Celsius or Fahrenheit) based on the user's location or query.
 5. Present the weather information including temperature in the appropriate unit, condition, wind speed, humidity, and any other relevant details from the get_weather() response.
 """
-with PostgresSaver.from_conn_string(DB_URI) as checkpointer:
-    checkpointer.setup()
-    agent = create_agent(
-        model=llm,
-        tools=[get_weather, get_location],
-        system_prompt=system_prompt,
-        checkpointer = checkpointer
-    )
-    if __name__ == "__main__":
-        while True:
-            user_query = input("Enter your query here: ")
-            if user_query.lower() in ["exit", "quit", "bye"]:
-                break
+connection =  PostgresSaver.from_conn_string(DB_URI)
+checkpointer = connection.__enter__()
+agent = create_agent(
+    model=llm,
+    tools=[get_weather, get_location],
+    system_prompt=system_prompt,
+    checkpointer = checkpointer
+)
 
-            response = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": user_query
-                    }
-                ]
-            },
-            {
-                "configurable": {
-                    "thread_id": "1"
-                }
-            }
-            )
-            print(response['messages'][-1].content)
