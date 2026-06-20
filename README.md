@@ -128,7 +128,8 @@ ai-weather-agent/
 1. Clone the repository
 
 ```bash
-git clone https://github.com/dhvani-vora/ai-weather-agent
+git clone https://github.com/dhvani-vora/ai-weather-agent.git
+cd ai-weather-agent
 ```
 
 2. Install dependencies
