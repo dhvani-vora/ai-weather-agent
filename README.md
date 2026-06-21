@@ -66,13 +66,10 @@ Supabase PostgreSQL
 ## Screenshots
 
 ### Weather Query with Follow-up Conversation
-![Weather Query](screenshots/weather-query.png)
-
-### Memory Demo Picture 1
-![Conversation Memory](screenshots/memory-demo-pt-1.png)
+![Weather Query](screenshots/weather_query.png)
 
 ### Persistent Memory After Restart
-![Persistent Memory](screenshots/memory-demo-pt-2.png)
+![Persistent Memory](screenshots/memory_demo.png)
 
 ## Tech Stack
 
