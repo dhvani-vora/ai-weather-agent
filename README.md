@@ -12,6 +12,8 @@ An AI agent built with LangChain and Google's Gemini model that can retrieve rea
 - Support for follow-up questions using conversation context
 - Dynamic temperature unit selection (Celsius/Fahrenheit)
 
+---
+
 ## How It Works
 
 The application uses two tools:
@@ -34,7 +36,19 @@ Examples:
 - "What's the weather today?"
   - Calls `get_location()`
   - Calls `get_weather(location)`
-    
+
+---
+
+## Screenshots
+
+### Weather Query with Follow-up Conversation
+![Weather Query](screenshots/weather_query.png)
+
+### Persistent Memory After Restart
+![Persistent Memory](screenshots/memory_demo.png)
+
+---
+
 ## Architecture
 
 ```text
@@ -63,13 +77,7 @@ LangGraph Memory
  ▼
 Supabase PostgreSQL
 ```
-## Screenshots
-
-### Weather Query with Follow-up Conversation
-![Weather Query](screenshots/weather_query.png)
-
-### Persistent Memory After Restart
-![Persistent Memory](screenshots/memory_demo.png)
+---
 
 ## Tech Stack
 
@@ -84,21 +92,9 @@ Supabase PostgreSQL
 - Requests
 - Python Dotenv
 - Flask
-  
-## Dependencies
 
-The project uses the following core packages:
+---
 
-- langchain
-- langchain-google-genai
-- langgraph
-- langgraph-checkpoint-postgres
-- flask
-- requests
-- python-dotenv
-- psycopg[binary]
-
-  
 ## Project Structure
 
 ```text
@@ -119,6 +115,7 @@ ai-weather-agent/
     ├── memory-demo-pt-1.png
     └── memory-demo-pt-2.png
 ```
+---
 
 ## Installation
 
@@ -153,6 +150,8 @@ python app.py
 ```
 http://127.0.0.1:5000
 ```
+---
+
 ## Example Usage
 
 ```text
@@ -183,6 +182,8 @@ Agent: It is 32°C and partly cloudy.
 User: Which city did we discuss earlier?
 Agent: We previously discussed Paris.
 ```
+---
+
 ## Learning Outcomes
 
 Through this project, I learned:
@@ -195,6 +196,8 @@ Through this project, I learned:
 - Integrating Supabase with Python
 - Designing multi-step AI workflows
 
+---
+
 ## Future Improvements
 
 - Browser GPS location support
@@ -203,23 +206,3 @@ Through this project, I learned:
 - Streaming responses
 - Voice-enabled weather assistant
 - Multi-user conversation support
-
-## Version History
-
-### v1.0
-- Gemini-powered weather agent
-- Tool calling with OpenWeatherMap API
-- Automatic location detection
-
-### v1.1
-- Persistent conversation memory
-- PostgreSQL database integration
-- Supabase cloud storage
-- Conversation history across sessions
-
-### v1.2
-- Flask web chat interface
-- Session-based chat history display
-- Styled conversational UI
-- Integration of LangGraph memory with web application
-- Support for multi-message browser conversations
